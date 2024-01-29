@@ -4,7 +4,7 @@ defmodule ExLearning.Projects.Pizza do
 
   def run() do
     {x, y} = load_data()
-    weight = LinearRegression.train(x, y, 10000, 0.01)
+    weight = LinearRegression.train(x, y, 10000, 0.001)
     IO.puts("最终训练得到m=#{weight}")
   end
 

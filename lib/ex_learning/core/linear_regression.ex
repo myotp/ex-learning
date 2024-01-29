@@ -4,20 +4,18 @@ defmodule ExLearning.Core.LinearRegression do
   def train(x, y, iterations, learning_rate) do
     start_weight = 0
 
+    # 用gradient descent方式快速求解, 不再需要分别尝试增大减小w了
+    # 导数趋近于0但是永远不等于0最终
     Enum.reduce_while(1..iterations, start_weight, fn i, weight ->
       current_loss = loss(x, y, weight)
       IO.puts("Iteration #{i} => loss: #{current_loss}")
+      g = Nx.to_number(gradient(x, y, weight))
+      weight = weight - g * learning_rate
 
-      cond do
-        # 非GD方式, 只是简单演示的目的
-        loss(x, y, weight + learning_rate) < current_loss ->
-          {:cont, weight + learning_rate}
-
-        loss(x, y, weight - learning_rate) < current_loss ->
-          {:cont, weight - learning_rate}
-
-        true ->
-          {:halt, weight}
+      if abs(g) < 0.0001 do
+        {:halt, weight}
+      else
+        {:cont, weight}
       end
     end)
   end
@@ -30,6 +28,11 @@ defmodule ExLearning.Core.LinearRegression do
   # 最简单的不含bias的线性函数y=weight*x
   defn predict(x, weight) do
     weight * x
+  end
+
+  # 针对MSE的loss函数gradient函数
+  defn gradient(x, y, w) do
+    2 * Nx.mean(x * (predict(x, w) - y))
   end
 
   # Mean Squared Errors (MSE)
