@@ -1,10 +1,17 @@
 defmodule ExLearning.Projects.Pizza do
   alias ExLearning.Core.LinearRegression
+  alias ExLearning.Core.LinearRegressionWithBias
 
   def run() do
     {x, y} = load_data()
     weight = LinearRegression.train(x, y, 10000, 0.01)
     IO.puts("最终训练得到m=#{weight}")
+  end
+
+  def run_with_bias() do
+    {x, y} = load_data()
+    {weight, bias} = LinearRegressionWithBias.train(x, y, 10000, 0.01)
+    IO.puts("最终训练得到m=#{weight} b=#{bias}")
   end
 
   def load_data() do
