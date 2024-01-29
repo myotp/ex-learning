@@ -20,8 +20,8 @@ defmodule ExLearning.Projects.Pizza do
       |> Nx.tensor()
       |> Nx.transpose()
 
-    reservations = Nx.slice_along_axis(t, 0, 1) |> Nx.squeeze()
-    sold_pizzas = Nx.slice_along_axis(t, 1, 1) |> Nx.squeeze()
+    reservations = Nx.slice_along_axis(t, 0, 1) |> Nx.reshape({30, 1})
+    sold_pizzas = Nx.slice_along_axis(t, 1, 1) |> Nx.reshape({30, 1})
     {reservations, sold_pizzas}
   end
 
