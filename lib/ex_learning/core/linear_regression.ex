@@ -6,17 +6,11 @@ defmodule ExLearning.Core.LinearRegression do
 
     # 用gradient descent方式快速求解, 不再需要分别尝试增大减小w了
     # 导数趋近于0但是永远不等于0最终
-    Enum.reduce_while(1..iterations, start_weight, fn i, weight ->
+    Enum.reduce(1..iterations, start_weight, fn i, weight ->
       current_loss = loss(x, y, weight)
       IO.puts("Iteration #{i} => loss: #{current_loss}")
       g = Nx.to_number(gradient(x, y, weight))
-      weight = weight - g * learning_rate
-
-      if abs(g) < 0.0001 do
-        {:halt, weight}
-      else
-        {:cont, weight}
-      end
+      weight - g * learning_rate
     end)
   end
 

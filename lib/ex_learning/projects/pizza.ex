@@ -10,7 +10,7 @@ defmodule ExLearning.Projects.Pizza do
 
   def run_with_bias() do
     {x, y} = load_data()
-    {weight, bias} = LinearRegressionWithBias.train(x, y, 10000, 0.01)
+    {weight, bias} = LinearRegressionWithBias.train(x, y, 10000, 0.001)
     IO.puts("最终训练得到m=#{weight} b=#{bias}")
   end
 
