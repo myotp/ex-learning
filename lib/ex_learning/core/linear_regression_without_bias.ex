@@ -1,4 +1,4 @@
-defmodule ExLearning.Core.LinearRegression do
+defmodule ExLearning.Core.LinearRegressionWithoutBias do
   import Nx.Defn
 
   def train(x, y, iterations, learning_rate) do
