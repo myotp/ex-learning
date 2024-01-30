@@ -24,3 +24,5 @@ ex_learning-*.tar
 
 # Temporary files, for example, from tests.
 /tmp/
+
+*.gz
