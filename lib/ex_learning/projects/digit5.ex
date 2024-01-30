@@ -63,11 +63,10 @@ defmodule ExLearning.Projects.Digit5 do
 
     images_bin
     |> image_bin_to_input_tensor(n_rows * n_cols)
-    |> Nx.divide(255)
   end
 
   def image_bin_to_input_tensor(images_bin, image_size) do
-    do_images_to_tensor(images_bin, image_size, 255, [])
+    do_images_to_tensor(images_bin, image_size, 1, [])
   end
 
   defp do_images_to_tensor(<<>>, _, _, tensors) do
