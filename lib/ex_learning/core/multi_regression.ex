@@ -1,4 +1,4 @@
-defmodule ExLearning.Core.MultiRegressionWithoutBias do
+defmodule ExLearning.Core.MultiRegression do
   import Nx.Defn
 
   # 替换普通乘法*为Nx.dot才是做两个矩阵(tensor)相乘

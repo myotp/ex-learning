@@ -1,9 +1,9 @@
 defmodule ExLearning.Projects.MultiPizza do
-  alias ExLearning.Core.MultiRegressionWithoutBias
+  alias ExLearning.Core.MultiRegression
 
   def run_without_bias() do
     {x, y} = load_data()
-    weight = MultiRegressionWithoutBias.train(x, y, 5_000, 0.001)
+    weight = MultiRegression.train(x, y, 5_000, 0.001)
     IO.puts("最终训练得到m=#{Nx.squeeze(weight) |> Nx.to_list() |> inspect()}")
   end
 
@@ -11,6 +11,7 @@ defmodule ExLearning.Projects.MultiPizza do
   def run_with_bias() do
     t =
       load_file()
+      # Nx有没有更好的办法插入一个列到tensor当中?
       |> Enum.map(fn row -> List.insert_at(row, 0, 1) end)
       |> Nx.tensor()
 
@@ -24,7 +25,7 @@ defmodule ExLearning.Projects.MultiPizza do
 
     {input_params, sold_pizzas}
 
-    weight = MultiRegressionWithoutBias.train(input_params, sold_pizzas, 100_000, 0.001)
+    weight = MultiRegression.train(input_params, sold_pizzas, 100_000, 0.001)
     IO.puts("最终训练得到m=#{Nx.squeeze(weight) |> Nx.to_list() |> inspect()}")
   end
 
