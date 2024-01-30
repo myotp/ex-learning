@@ -7,6 +7,27 @@ defmodule ExLearning.Projects.MultiPizza do
     IO.puts("最终训练得到m=#{Nx.squeeze(weight) |> Nx.to_list() |> inspect()}")
   end
 
+  # 主要是加一列虚拟bias列, 全部设置为1, 则输入变成(30,4)
+  def run_with_bias() do
+    t =
+      load_file()
+      |> Enum.map(fn row -> List.insert_at(row, 0, 1) end)
+      |> Nx.tensor()
+
+    input_params = Nx.slice(t, [0, 0], [30, 4])
+
+    sold_pizzas =
+      t
+      |> Nx.transpose()
+      |> Nx.slice_along_axis(4, 1)
+      |> Nx.reshape({30, 1})
+
+    {input_params, sold_pizzas}
+
+    weight = MultiRegressionWithoutBias.train(input_params, sold_pizzas, 100_000, 0.001)
+    IO.puts("最终训练得到m=#{Nx.squeeze(weight) |> Nx.to_list() |> inspect()}")
+  end
+
   def load_data() do
     t =
       load_file()
