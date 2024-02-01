@@ -1,0 +1,8 @@
+* Nx
+t = Nx.tensor([ [1,2,3], [4,5,6] ], type: {:u, 32}, names: [:x, :y])
+Nx.rank(t)
+Nx.names(t)
+Nx.type(t)
+
+Nx.broadcast(999, {2, 4})
+Nx.new_axis(t, 1, :baz)
