@@ -1,3 +1,8 @@
+* CUDA backend
+export MIX_ENV=cuda
+mix deps.get
+iex -S mix
+
 * Nx
 t = Nx.tensor([ [1,2,3], [4,5,6] ], type: {:u, 32}, names: [:x, :y])
 Nx.rank(t)
