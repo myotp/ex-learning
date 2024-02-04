@@ -6,3 +6,18 @@ Nx.type(t)
 
 Nx.broadcast(999, {2, 4})
 Nx.new_axis(t, 1, :baz)
+
+* Linear Regression
+Pizza.run_without_bias()
+Pizza.run_with_bias()
+
+* Multi Regression
+MultiPizza.run_without_bias()
+MultiPizza.run_with_bias()
+
+* Binary Classifier
+Police.run()
+
+* MNIST
+# Simple binary classifier, is 5?
+Digit5.run()
