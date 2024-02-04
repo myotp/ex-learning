@@ -24,6 +24,7 @@ defmodule ExLearning.MixProject do
   defp deps do
     [
       {:nx, "~> 0.6.4"},
+      {:exla, "~> 0.6.4"},
       {:mix_test_watch, "~> 1.1", only: [:dev, :test], runtime: false}
     ]
   end
