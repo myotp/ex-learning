@@ -62,12 +62,14 @@ defmodule ExLearning.Projects.Digit5 do
     <<_::32, n_images::32, n_rows::32, n_cols::32, images_bin::binary>> =
       read_and_unzip!(filename)
 
+    # 在CUDA机器上面跑这种操作很快
     images_bin
     |> Nx.from_binary({:u, 8})
     |> Nx.reshape({n_images, n_rows * n_cols})
     |> Util.append_column(1)
   end
 
+  # 这是我之前针对Mac CPU后端所做的"优化"但是cuda之后concatenate很慢
   def image_bin_to_input_tensor(images_bin, image_size) do
     do_images_to_tensor(images_bin, image_size, 1, [])
   end

@@ -1,6 +1,8 @@
 * CUDA backend
+export XLA_TARGET=cuda120
 export MIX_ENV=cuda
 mix deps.get
+mix deps.compile
 iex -S mix
 
 * Nx
@@ -24,5 +26,10 @@ MultiPizza.run_with_bias()
 Police.run()
 
 * MNIST
+wget https://storage.googleapis.com/cvdf-datasets/mnist/train-images-idx3-ubyte.gz
+wget https://storage.googleapis.com/cvdf-datasets/mnist/train-labels-idx1-ubyte.gz
+wget https://storage.googleapis.com/cvdf-datasets/mnist/t10k-images-idx3-ubyte.gz
+wget https://storage.googleapis.com/cvdf-datasets/mnist/t10k-labels-idx1-ubyte.gz
+
 # Simple binary classifier, is 5?
 Digit5.run()
