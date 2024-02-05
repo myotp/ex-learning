@@ -15,7 +15,7 @@ defmodule ExLearning.Projects.Mnist do
     run_test(weight)
   end
 
-  def run_test(weight) do
+  defp run_test(weight) do
     test_images = load_test_images()
     test_labels = load_test_labels()
     result = MnistClassifier.classify(test_images, weight)
@@ -28,11 +28,26 @@ defmodule ExLearning.Projects.Mnist do
     IO.puts("Success: #{success}/10000")
   end
 
-  def load_train_images() do
+  defp load_train_images() do
     load_images_file(@train_image_file)
   end
 
-  def load_one_hot_encoded_train_labels() do
+  defp load_test_images() do
+    load_images_file(@test_image_file)
+  end
+
+  defp load_images_file(filename) do
+    <<_::32, n_images::32, n_rows::32, n_cols::32, images_bin::binary>> =
+      read_and_unzip!(filename)
+
+    # 在CUDA机器上面跑这种操作很快
+    images_bin
+    |> Nx.from_binary({:u, 8})
+    |> Nx.reshape({n_images, n_rows * n_cols})
+    |> Util.append_column(1)
+  end
+
+  defp load_one_hot_encoded_train_labels() do
     <<_::32, _n_labels::32, labels::binary>> = read_and_unzip!(@train_label_file)
 
     labels
@@ -51,26 +66,11 @@ defmodule ExLearning.Projects.Mnist do
     Map.fetch!(@one_hot_encoded_mapping, n)
   end
 
-  def load_test_images() do
-    load_images_file(@test_image_file)
-  end
-
-  def load_test_labels() do
+  defp load_test_labels() do
     <<_::32, _n_labels::32, labels::binary>> = read_and_unzip!(@test_label_file)
 
     labels
     |> Nx.from_binary({:u, 8})
-  end
-
-  defp load_images_file(filename) do
-    <<_::32, n_images::32, n_rows::32, n_cols::32, images_bin::binary>> =
-      read_and_unzip!(filename)
-
-    # 在CUDA机器上面跑这种操作很快
-    images_bin
-    |> Nx.from_binary({:u, 8})
-    |> Nx.reshape({n_images, n_rows * n_cols})
-    |> Util.append_column(1)
   end
 
   defp read_and_unzip!(filename) do
