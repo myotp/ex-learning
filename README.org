@@ -1,3 +1,10 @@
+* CUDA backend
+export XLA_TARGET=cuda120
+export MIX_ENV=cuda
+mix deps.get
+mix deps.compile
+iex -S mix
+
 * Nx
 t = Nx.tensor([ [1,2,3], [4,5,6] ], type: {:u, 32}, names: [:x, :y])
 Nx.rank(t)
@@ -6,3 +13,23 @@ Nx.type(t)
 
 Nx.broadcast(999, {2, 4})
 Nx.new_axis(t, 1, :baz)
+
+* Linear Regression
+Pizza.run_without_bias()
+Pizza.run_with_bias()
+
+* Multi Regression
+MultiPizza.run_without_bias()
+MultiPizza.run_with_bias()
+
+* Binary Classifier
+Police.run()
+
+* MNIST
+wget https://storage.googleapis.com/cvdf-datasets/mnist/train-images-idx3-ubyte.gz
+wget https://storage.googleapis.com/cvdf-datasets/mnist/train-labels-idx1-ubyte.gz
+wget https://storage.googleapis.com/cvdf-datasets/mnist/t10k-images-idx3-ubyte.gz
+wget https://storage.googleapis.com/cvdf-datasets/mnist/t10k-labels-idx1-ubyte.gz
+
+# Simple binary classifier, is 5?
+Digit5.run()
