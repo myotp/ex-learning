@@ -42,7 +42,7 @@ defmodule ExLearning.Core.MnistClassifier do
     x_shape_1 = Nx.axis_size(x, 1)
     y_shape_1 = Nx.axis_size(y, 1)
     IO.puts("weight shape: (#{x_shape_1}, #{y_shape_1})")
-    start_weight = Nx.iota({x_shape_1, y_shape_1}, axis: 1)
+    start_weight = Nx.iota({1, x_shape_1, y_shape_1}, axis: 0) |> Nx.take(0)
 
     Enum.reduce(1..iterations, start_weight, fn i, weight ->
       current_loss = loss(x, y, weight)
