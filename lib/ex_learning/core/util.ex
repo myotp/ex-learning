@@ -8,4 +8,9 @@ defmodule ExLearning.Core.Util do
     Nx.concatenate([t1, tt])
     |> Nx.transpose()
   end
+
+  def zeros(x, y) do
+    Nx.iota({1, x, y}, axis: 0)
+    |> Nx.take(0)
+  end
 end
