@@ -12,19 +12,22 @@ defmodule ExLearning.Projects.Digit5 do
     train_labels = load_train_labels()
     IO.puts("Loading data done, start training...")
     weight = BinaryClassifier.train(train_images, train_labels, 100, 0.00001)
-    weight
+    run_test(weight)
   end
 
   def run_test(weight) do
     test_images = load_test_images()
     test_labels = load_test_labels()
-    result = BinaryClassifier.forward(test_images, weight)
+    result = BinaryClassifier.classify(test_images, weight)
 
-    Nx.subtract(result, test_labels)
-    |> Nx.abs()
-    |> Nx.sum()
-    |> Nx.to_number()
-    |> floor()
+    failed =
+      Nx.subtract(result, test_labels)
+      |> Nx.abs()
+      |> Nx.sum()
+      |> Nx.to_number()
+      |> floor()
+
+    IO.puts("Success: #{10000 - failed}/10000")
   end
 
   def load_train_images() do
