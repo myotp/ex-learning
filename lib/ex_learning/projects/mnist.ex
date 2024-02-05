@@ -12,7 +12,7 @@ defmodule ExLearning.Projects.Mnist do
     train_labels = load_one_hot_encoded_train_labels()
     IO.puts("Loading data done, start training...")
     weight = MnistClassifier.train(train_images, train_labels, 200, 0.00001)
-    weight
+    run_test(weight)
   end
 
   def run_test(weight) do
@@ -20,14 +20,12 @@ defmodule ExLearning.Projects.Mnist do
     test_labels = load_test_labels()
     result = MnistClassifier.classify(test_images, weight)
 
-    failed =
+    success =
       Nx.subtract(result, test_labels)
-      |> Nx.abs()
-      |> Nx.sum()
-      |> Nx.to_number()
-      |> floor()
+      |> Nx.to_list()
+      |> Enum.count(fn x -> x == 0 end)
 
-    IO.puts("Success: #{10000 - failed}/10000")
+    IO.puts("Success: #{success}/10000")
   end
 
   def load_train_images() do
