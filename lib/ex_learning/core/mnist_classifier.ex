@@ -20,10 +20,11 @@ defmodule ExLearning.Core.MnistClassifier do
 
   # logistic loss
   defn log_loss(x, y, w) do
+    x_shape_0 = Nx.axis_size(x, 0)
     y_hat = forward(x, w)
     first_term = y * Nx.log(y_hat)
     second_term = (1 - y) * Nx.log(1 - y_hat)
-    -Nx.mean(first_term + second_term)
+    -Nx.sum(first_term + second_term) / x_shape_0
   end
 
   def loss(x, y, w) do
@@ -32,8 +33,8 @@ defmodule ExLearning.Core.MnistClassifier do
   end
 
   defn gradient(x, y, w) do
-    x_t = Nx.transpose(x)
     x_shape_0 = Nx.axis_size(x, 0)
+    x_t = Nx.transpose(x)
     Nx.dot(x_t, forward(x, w) - y) / x_shape_0
   end
 
