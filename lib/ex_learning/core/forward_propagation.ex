@@ -1,6 +1,8 @@
 defmodule ExLearning.Core.ForwardPropagation do
   import Nx.Defn
 
+  alias ExLearning.Core.Util
+
   defn sigmoid(z) do
     1 / (1 + Nx.exp(-z))
   end
@@ -16,26 +18,16 @@ defmodule ExLearning.Core.ForwardPropagation do
     -Nx.sum(only_term) / y_shape_0
   end
 
-  def prepend_bias(x) do
-    prepend_column(x, 1)
+  defn prepend_bias(x) do
+    Util.prepend_column(x, 1)
   end
 
-  def prepend_column(t, num) do
-    rows = Nx.axis_size(t, 0)
-    dummy_column = Stream.repeatedly(fn -> num end) |> Enum.take(rows)
-    tt = Nx.transpose(t)
-    t1 = Nx.tensor([dummy_column])
-
-    Nx.concatenate([t1, tt])
-    |> Nx.transpose()
-  end
-
-  def classify(x, w1, w2) do
+  defn classify(x, w1, w2) do
     y_hat = forward(x, w1, w2)
     Nx.argmax(y_hat, axis: 1)
   end
 
-  def forward(x, w1, w2) do
+  defn forward(x, w1, w2) do
     h = sigmoid(Nx.dot(prepend_bias(x), w1))
     y_hat = softmax(Nx.dot(prepend_bias(h), w2))
     y_hat
