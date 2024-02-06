@@ -35,7 +35,7 @@ defmodule ExLearning.Core.NeuralNetwork do
   end
 
   def classify(x, w1, w2) do
-    y_hat = forward(x, w1, w2)
+    {y_hat, _} = forward(x, w1, w2)
     Nx.argmax(y_hat, axis: 1)
   end
 
@@ -46,23 +46,37 @@ defmodule ExLearning.Core.NeuralNetwork do
   end
 
   def back(x, y, y_hat, w2, h) do
-    y_shape_0 = Nx.axis_size(y, 0)
-    do_back(x, y, y_hat, w2, h, y_shape_0 - 1)
-  end
-
-  def do_back(x, y, y_hat, w2, h, w2_keep_rows) do
-    xb = prepend_bias(x)
-    hb = prepend_bias(h)
+    w2_shape_0 = Nx.axis_size(w2, 0)
     x_shape_0 = Nx.axis_size(x, 0)
-    w2_gradient = Nx.divide(Nx.dot(Nx.transpose(hb), Nx.subtract(y_hat, y)), x_shape_0)
-    w2_no_first_row = Nx.slice_along_axis(w2, 1, w2_keep_rows, axis: 0)
-    tmp = Nx.dot(Nx.transpose(xb), Nx.dot(Nx.subtract(y_hat, y), Nx.transpose(w2_no_first_row)))
-    w1_gradient = Nx.divide(Nx.multiply(tmp, sigmoid_gradient(h)), x_shape_0)
+
+    w2_gradient =
+      Nx.divide(
+        Nx.dot(Nx.transpose(prepend_bias(h)), Nx.subtract(y_hat, y)),
+        x_shape_0
+      )
+
+    w2_no_first_row = Nx.slice_along_axis(w2, 1, w2_shape_0 - 1, axis: 0)
+
+    w1_gradient =
+      Nx.divide(
+        Nx.dot(
+          Nx.transpose(prepend_bias(x)),
+          Nx.multiply(
+            Nx.dot(
+              Nx.subtract(y_hat, y),
+              Nx.transpose(w2_no_first_row)
+            ),
+            sigmoid_gradient(h)
+          )
+        ),
+        x_shape_0
+      )
+
     {w1_gradient, w2_gradient}
   end
 
   def report(iter, x_train, y_train, x_test, y_test, w1, w2) do
-    y_hat = forward(x_train, w1, w2)
+    {y_hat, _} = forward(x_train, w1, w2)
     training_loss = cross_entropy_loss(y_train, y_hat) |> Nx.to_number()
     classifications = classify(x_test, w1, w2)
     accuracy = Nx.mean(Nx.equal(classifications, y_test)) |> Nx.to_number()
