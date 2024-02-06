@@ -1,8 +1,18 @@
 defmodule ExLearning.Projects.MnistNN do
+  alias ExLearning.Core.NeuralNetwork
+
   @train_image_file "train-images-idx3-ubyte.gz"
   @train_label_file "train-labels-idx1-ubyte.gz"
   @test_image_file "t10k-images-idx3-ubyte.gz"
   @test_label_file "t10k-labels-idx1-ubyte.gz"
+
+  def run() do
+    x_train = load_train_images()
+    y_train = load_one_hot_encoded_train_labels()
+    x_test = load_test_images()
+    y_test = load_test_labels()
+    NeuralNetwork.train(x_train, y_train, x_test, y_test, 200, 10000, 0.01)
+  end
 
   def load_train_images() do
     load_images_file(@train_image_file)
