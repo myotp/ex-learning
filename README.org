@@ -33,3 +33,6 @@ wget https://storage.googleapis.com/cvdf-datasets/mnist/t10k-labels-idx1-ubyte.g
 
 # Simple binary classifier, is 5?
 Digit5.run()
+
+* Neural Network
+MnistNN.run()
