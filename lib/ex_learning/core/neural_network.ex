@@ -53,15 +53,11 @@ defmodule ExLearning.Core.NeuralNetwork do
   def do_back(x, y, y_hat, w2, h, w2_keep_rows) do
     xb = prepend_bias(x)
     hb = prepend_bias(h)
-    do_back(x, y, y_hat, w2, h, w2_keep_rows, xb, hb)
-  end
-
-  defn do_back(x, y, y_hat, w2, h, w2_keep_rows, xb, hb) do
     x_shape_0 = Nx.axis_size(x, 0)
-    w2_gradient = Nx.dot(Nx.transpose(hb), y_hat - y) / x_shape_0
+    w2_gradient = Nx.divide(Nx.dot(Nx.transpose(hb), Nx.subtract(y_hat, y)), x_shape_0)
     w2_no_first_row = Nx.slice_along_axis(w2, 1, w2_keep_rows, axis: 0)
-    tmp = Nx.dot(Nx.transpose(xb), Nx.dot(y_hat - y, Nx.transpose(w2_no_first_row)))
-    w1_gradient = tmp * sigmoid_gradient(h) / x_shape_0
+    tmp = Nx.dot(Nx.transpose(xb), Nx.dot(Nx.subtract(y_hat, y), Nx.transpose(w2_no_first_row)))
+    w1_gradient = Nx.divide(Nx.multiply(tmp, sigmoid_gradient(h)), x_shape_0)
     {w1_gradient, w2_gradient}
   end
 
