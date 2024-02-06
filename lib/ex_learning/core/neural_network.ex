@@ -21,10 +21,10 @@ defmodule ExLearning.Core.NeuralNetwork do
   end
 
   def prepend_bias(x) do
-    append_column(x, 1)
+    prepend_column(x, 1)
   end
 
-  def append_column(t, num) do
+  def prepend_column(t, num) do
     rows = Nx.axis_size(t, 0)
     dummy_column = Stream.repeatedly(fn -> num end) |> Enum.take(rows)
     tt = Nx.transpose(t)

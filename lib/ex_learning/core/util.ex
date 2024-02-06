@@ -1,11 +1,11 @@
 defmodule ExLearning.Core.Util do
-  def append_column(t, num) do
-    rows = Nx.axis_size(t, 0)
-    dummy_column = Stream.repeatedly(fn -> num end) |> Enum.take(rows)
-    tt = Nx.transpose(t)
-    t1 = Nx.tensor([dummy_column])
+  import Nx.Defn
 
-    Nx.concatenate([t1, tt])
+  defn prepend_column(t, num) do
+    rows = Nx.axis_size(t, 0)
+    t0 = Nx.broadcast(num, {1, rows})
+
+    Nx.concatenate([t0, Nx.transpose(t)])
     |> Nx.transpose()
   end
 end

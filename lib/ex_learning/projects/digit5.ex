@@ -69,7 +69,7 @@ defmodule ExLearning.Projects.Digit5 do
     images_bin
     |> Nx.from_binary({:u, 8})
     |> Nx.reshape({n_images, n_rows * n_cols})
-    |> Util.append_column(1)
+    |> Util.prepend_column(1)
   end
 
   # 这是我之前针对Mac CPU后端所做的"优化"但是cuda之后concatenate很慢

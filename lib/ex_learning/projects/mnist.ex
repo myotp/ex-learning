@@ -44,7 +44,7 @@ defmodule ExLearning.Projects.Mnist do
     images_bin
     |> Nx.from_binary({:u, 8})
     |> Nx.reshape({n_images, n_rows * n_cols})
-    |> Util.append_column(1)
+    |> Util.prepend_column(1)
   end
 
   defp load_one_hot_encoded_train_labels() do
