@@ -14,6 +14,10 @@ Nx.type(t)
 Nx.broadcast(999, {2, 4})
 Nx.new_axis(t, 1, :baz)
 
+* Nx Tips
+# 建立一个全0的tensor
+Nx.broadcast(0, {5, 4})
+
 * Linear Regression
 Pizza.run_without_bias()
 Pizza.run_with_bias()

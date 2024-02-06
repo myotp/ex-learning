@@ -10,10 +10,4 @@ defmodule ExLearning.Core.UtilTest do
                Util.append_column(images_tensor, 255)
     end
   end
-
-  describe "zeros/2" do
-    test "success" do
-      assert Nx.tensor([[0, 0, 0, 0], [0, 0, 0, 0]]) == Util.zeros(2, 4)
-    end
-  end
 end
