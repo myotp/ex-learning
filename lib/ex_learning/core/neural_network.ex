@@ -40,28 +40,15 @@ defmodule ExLearning.Core.NeuralNetwork do
     w2_shape_0 = Nx.axis_size(w2, 0)
     x_shape_0 = Nx.axis_size(x, 0)
 
-    w2_gradient =
-      Nx.divide(
-        Nx.dot(Nx.transpose(prepend_bias(h)), Nx.subtract(y_hat, y)),
-        x_shape_0
-      )
+    w2_gradient = Nx.dot(Nx.transpose(prepend_bias(h)), y_hat - y) / x_shape_0
 
     w2_no_first_row = Nx.slice_along_axis(w2, 1, w2_shape_0 - 1, axis: 0)
 
     w1_gradient =
-      Nx.divide(
-        Nx.dot(
-          Nx.transpose(prepend_bias(x)),
-          Nx.multiply(
-            Nx.dot(
-              Nx.subtract(y_hat, y),
-              Nx.transpose(w2_no_first_row)
-            ),
-            sigmoid_gradient(h)
-          )
-        ),
-        x_shape_0
-      )
+      Nx.dot(
+        Nx.transpose(prepend_bias(x)),
+        Nx.dot(Nx.subtract(y_hat, y), Nx.transpose(w2_no_first_row)) * sigmoid_gradient(h)
+      ) / x_shape_0
 
     {w1_gradient, w2_gradient}
   end
