@@ -18,6 +18,10 @@ Nx.new_axis(t, 1, :baz)
 # 建立一个全0的tensor
 Nx.broadcast(0, {5, 4})
 
+# 巧妙的one-hot encoded方法
+labels = Nx.tensor([2,5]) |> Nx.new_axis(-1)
+Nx.equal(labels, Nx.tensor(Enum.to_list(1..9)))
+
 * Linear Regression
 Pizza.run_without_bias()
 Pizza.run_with_bias()
@@ -40,3 +44,10 @@ Digit5.run()
 
 * Neural Network
 MnistNN.run()
+
+* Axon MNIST
+Nx.tensor(Enum.to_list(1..40)) |> Nx.to_batched(4) |> Enum.split(3)
+
+model = MnistAxon.build_model()
+model_state = MnistAxon.train_model(model)
+MnistAxon.test_model(model, model_state)
