@@ -4,7 +4,7 @@ defmodule ExLearning.Axon.Mnist do
     # 中间层用sigmoid最后层用softmax
     # 不用自己再去考虑bias的问题
     Axon.input("input", shape: input_shape)
-    |> Axon.dense(200, activation: :sigmoid)
+    |> Axon.dense(200, activation: :relu)
     |> Axon.dense(10, activation: :softmax)
   end
 
