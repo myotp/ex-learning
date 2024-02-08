@@ -59,8 +59,6 @@ defmodule ExLearning.Projects.MnistAxon do
     |> Nx.reshape({n_images, n_rows * n_cols})
     |> Nx.divide(255)
     |> Nx.to_batched(@batch_size)
-    # Test split 60000/32=1875=1750+125
-    |> Enum.split(1750)
   end
 
   def load_lables_file(filename) do
@@ -72,7 +70,6 @@ defmodule ExLearning.Projects.MnistAxon do
     # one-hot encoded
     |> Nx.equal(Nx.tensor(@label_values))
     |> Nx.to_batched(@batch_size)
-    |> Enum.split(1750)
   end
 
   def read_and_unzip!(filename) do
