@@ -48,6 +48,11 @@ MnistNN.run()
 * Axon MNIST
 Nx.tensor(Enum.to_list(1..40)) |> Nx.to_batched(4) |> Enum.split(3)
 
+# 分步
 model = MnistAxon.build_model()
 model_state = MnistAxon.train_model(model)
 MnistAxon.test_model(model, model_state)
+
+# 一次
+iex -S mix
+MnistAxon.run()
