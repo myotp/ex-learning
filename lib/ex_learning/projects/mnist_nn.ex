@@ -11,7 +11,21 @@ defmodule ExLearning.Projects.MnistNN do
     y_train = load_one_hot_encoded_train_labels()
     x_test = load_test_images()
     y_test = load_test_labels()
-    NeuralNetwork.train(x_train, y_train, x_test, y_test, 200, 10000, 0.01)
+    {w1, w2} = NeuralNetwork.train(x_train, y_train, x_test, y_test, 200, 10000, 0.01)
+    run_test(w1, w2)
+  end
+
+  def run_test(w1, w2) do
+    test_images = load_test_images()
+    test_labels = load_test_labels()
+    result = NeuralNetwork.classify(test_images, w1, w2)
+
+    success =
+      Nx.subtract(result, test_labels)
+      |> Nx.to_list()
+      |> Enum.count(fn x -> x == 0 end)
+
+    IO.puts("Success: #{success}/10000")
   end
 
   def load_train_images() do
