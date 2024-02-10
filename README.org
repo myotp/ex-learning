@@ -92,3 +92,6 @@ Projects.MnistCnn.run()
 | Core.NeuralNetwork   |    93.17 | Projects.MnistNN         |
 | Axon.Mnist           |    97.49 | Projects.MnistAxon       |
 | Axon.MnistCNN        |    98.62 | Projects.MnistCnn        |
+
+* Mnist GANs
+Projects.MnistGAN.run()
