@@ -1,4 +1,4 @@
-defmodule ExLearning.Projects.Mnist do
+defmodule ExLearning.Projects.MnistRegression do
   alias ExLearning.Core.MnistClassifier
   alias ExLearning.Core.Util
 
