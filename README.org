@@ -94,4 +94,9 @@ Projects.MnistCnn.run()
 | Axon.MnistCNN        |    98.62 | Projects.MnistCnn        |
 
 * Mnist GANs
-Projects.MnistGAN.run()
+result = Projects.MnistGAN.run()
+trained_params = result.step_state.generator.model_state
+generator_model = ExLearning.Axon.MnistGAN.build_generator(100)
+
+result.step_state.random_key
+Nx.Random.normal(Nx.tensor([280889341, 3072476340], type: {:u, 32}), shape: {32, 100})
