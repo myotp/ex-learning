@@ -1,0 +1,17 @@
+* Axon model
+# 简单Axon model guide 单node，怎么进去，怎么出来
+input = Axon.input("data")
+{init_fn, predict_fn} = Axon.build(input)
+params = init_fn.(Nx.template({1, 8}, :f32), %{})
+predict_fn.(params, Nx.iota({1, 8}))
+
+# mnist例子
+model = MnistAxon.build_model()
+{init_fn, predict_fn} = Axon.build(model)
+params = init_fn.(Nx.template({1, 784}, :f32), %{})
+test_images = MnistAxon.load_test_images() |> Enum.take(1) |> hd()
+predict_fn.(params, test_images) |> Nx.argmax(axis: 1)
+
+trained_params = MnistAxon.train_model(model)
+predict_fn.(trained_params, test_images) |> Nx.argmax(axis: 1)
+Axon.predict(model, trained_params, test_images) |> Nx.argmax(axis: 1)
