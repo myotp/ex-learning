@@ -39,3 +39,6 @@ Axon.Activations.relu(Nx.tensor([ -5, 0, 5 ]))
 t = Nx.broadcast(0, {2,3,2})
 Nx.add(t, Nx.tensor([8,9]))
 Nx.add(t, Nx.tensor([ [5,7],[8,9],[4,4] ]))
+
+* XOR
+Projects.XOR.run()

@@ -7,7 +7,13 @@ defmodule ExLearning.Projects.XOR do
     model = XOR.build_model({nil, 1}, {nil, 1})
     data = Stream.repeatedly(&load_data/0)
     params = XOR.train_model(model, data, 10)
-    params
+    test_model(model, params)
+  end
+
+  def test_model(model, params) do
+    t1 = Nx.tensor([[0], [0], [1], [1]])
+    t2 = Nx.tensor([[0], [1], [0], [1]])
+    Axon.predict(model, params, %{"num1" => t1, "num2" => t2})
   end
 
   defp load_data() do
