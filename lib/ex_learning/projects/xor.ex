@@ -5,7 +5,7 @@ defmodule ExLearning.Projects.XOR do
 
   def run() do
     model = XOR.build_model({nil, 1}, {nil, 1})
-    data = load_data()
+    data = Stream.repeatedly(&load_data/0)
     params = XOR.train_model(model, data, 10)
     params
   end
