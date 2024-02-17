@@ -26,7 +26,8 @@ defmodule ExLearning.MixProject do
       {:nx, "~> 0.6.4"},
       {:exla, "~> 0.6.4"},
       {:axon, "~> 0.6.0"},
-      {:mix_test_watch, "~> 1.1", only: [:dev, :test], runtime: false}
+      {:mix_test_watch, "~> 1.1", only: [:dev, :test], runtime: false},
+      {:table_rex, "~> 3.1.1"}
     ]
   end
 end
