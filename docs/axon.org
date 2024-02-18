@@ -40,5 +40,11 @@ t = Nx.broadcast(0, {2,3,2})
 Nx.add(t, Nx.tensor([8,9]))
 Nx.add(t, Nx.tensor([ [5,7],[8,9],[4,4] ]))
 
-* XOR
-Projects.XOR.run()
+* Axon
+alias ExLearning.Axon.XOR
+model = XOR.build_model({nil, 1}, {nil, 1})
+input = %{"num1" => Nx.tensor([ [0] ]), "num2" => Nx.tensor([ [1] ])}
+Axon.Display.as_table(model, input) |> IO.puts()
+XOR.train_model(model)
+
+Axon.build(model)

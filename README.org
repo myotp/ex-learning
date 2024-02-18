@@ -100,3 +100,6 @@ generator_model = ExLearning.Axon.MnistGAN.build_generator(100)
 
 result.step_state.random_key
 Nx.Random.normal(Nx.tensor([280889341, 3072476340], type: {:u, 32}), shape: {32, 100})
+
+* XOR
+Projects.XOR.run()
