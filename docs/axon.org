@@ -50,14 +50,36 @@ XOR.train_model(model)
 Axon.build(model)
 
 * Axon model
+# 模型本身带有softmax
 alias ExLearning.Axon.Simple
 model1 = Simple.build_simple()
-{init_fn1, pred_fn} = Axon.build(model1)
-params1 = init_fn1.(Nx.template({1, 6}, :f32), %{})
-Axon.predict(model1, params1, Nx.tensor([ [1,2,3,3,2,1] ]))
+model2 = Simple.build_simple_no_softmax()
+model3 = Simple.extend_softmax(model2)
+
+# 输出对比
+{init_fn, _pred_fn} = Axon.build(model1)
+params = init_fn.(Nx.template({1, 6}, :f32), %{})
+# 直接带有softmax跟串联组合结果完全一样
+Axon.predict(model1, params, Nx.tensor([ [1,2,3,3,2,1] ]))
+Axon.predict(model3, params, Nx.tensor([ [1,2,3,3,2,1] ]))
+# 不含softmax的model2输出
+Axon.predict(model2, params, Nx.tensor([ [1,2,3,3,2,1] ]))
+
+# 单独只含input
+model0 = Simple.simple_input()
+{init_fn, _} = Axon.build(model0)
+%{} = params = init_fn.(Nx.template({1, 3}, :u8), %{})
+Axon.predict(model0, %{}, Nx.tensor([1,1,1]))
+
+# 简单模型只有输入加直接softmax
+model02 = Simple.extend_softmax(model0)
+Axon.predict(model02, %{}, Nx.tensor([1,1,1]))
+Axon.predict(model02, %{}, Nx.tensor([1,1,-1]))
+Axon.Activations.softmax(Nx.tensor([1,1,1]))
+Axon.Activations.softmax(Nx.tensor([1,1,-1]))
 
 alias ExLearning.Axon.Simple
-model2 = Simple.build_simple2()
+model2 = Simple.build_simple_no_softmax()
 {init_fn2, pred_fn} = Axon.build(model2)
 params2 = init_fn.(Nx.template({1, 6}, :f32), %{})
 Axon.predict(model2, params2, Nx.tensor([ [1,2,3,3,2,1] ]))
@@ -71,3 +93,11 @@ Axon.predict(model2, params2, Nx.tensor([ [1,2,3,3,2,1] ]))
 
 Axon.predict(model1, params2, Nx.tensor([ [1,2,3,3,2,1] ]))
 Axon.predict(model2, params2, Nx.tensor([ [1,2,3,3,2,1] ]))
+
+alias ExLearning.Axon.Simple
+model2 = Simple.build_simple_no_softmax()
+model3 = Simple.build_simple_only_softmax(model2)
+{init_fn, pred_fn} = Axon.build(model1)
+params = init_fn.(Nx.template({1, 6}, :f32), %{})
+Axon.predict(model1, params, Nx.tensor([ [1,2,3,3,2,1] ]))
+Axon.predict(model3, params, Nx.tensor([ [1,2,3,3,2,1] ]))
