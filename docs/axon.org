@@ -48,3 +48,26 @@ Axon.Display.as_table(model, input) |> IO.puts()
 XOR.train_model(model)
 
 Axon.build(model)
+
+* Axon model
+alias ExLearning.Axon.Simple
+model1 = Simple.build_simple()
+{init_fn1, pred_fn} = Axon.build(model1)
+params1 = init_fn1.(Nx.template({1, 6}, :f32), %{})
+Axon.predict(model1, params1, Nx.tensor([ [1,2,3,3,2,1] ]))
+
+alias ExLearning.Axon.Simple
+model2 = Simple.build_simple2()
+{init_fn2, pred_fn} = Axon.build(model2)
+params2 = init_fn.(Nx.template({1, 6}, :f32), %{})
+Axon.predict(model2, params2, Nx.tensor([ [1,2,3,3,2,1] ]))
+
+# 对比1跟2有无softmax
+Axon.predict(model1, params1, Nx.tensor([ [1,2,3,3,2,1] ]))
+Axon.predict(model2, params1, Nx.tensor([ [1,2,3,3,2,1] ]))
+
+Axon.predict(model2, params1, Nx.tensor([ [1,2,3,3,2,1] ]))
+Axon.predict(model2, params2, Nx.tensor([ [1,2,3,3,2,1] ]))
+
+Axon.predict(model1, params2, Nx.tensor([ [1,2,3,3,2,1] ]))
+Axon.predict(model2, params2, Nx.tensor([ [1,2,3,3,2,1] ]))
