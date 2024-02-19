@@ -21,4 +21,10 @@ defmodule ExLearning.Axon.Simple do
   def simple_input() do
     Axon.input("input", shape: {nil, 3})
   end
+
+  # similar to y=m*x+b
+  def simple_linear() do
+    Axon.input("input", shape: {nil, 1})
+    |> Axon.dense(1)
+  end
 end

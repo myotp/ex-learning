@@ -89,3 +89,59 @@ params = init_fn.(Nx.template({1, 6}, :f32), %{})
 Axon.predict(model, params, Nx.tensor([ [0.1, 0.2, 0.3, 0.3, 0.2, 0.1] ]))
 
 Axon.Losses.categorical_cross_entropy(Nx.tensor([0,0,1]), Nx.tensor([0.5, -0.1, 1.1]))
+
+** linear
+model = Simple.simple_linear()
+Axon.Display.as_table(model, Nx.template({5,1}, :u8)) |> IO.puts()
+{init_fn, pred_fn} = Axon.build(model)
+params = init_fn.(Nx.template({1, 1}, :u8), %{})
+
+* Linear regression with Axon functions
+alias ExLearning.Axon.NaiveLinearRegression
+# y = 2*x + 3
+# model
+model = NaiveLinearRegression.build_model()
+{init_fn, pred_fn} = Axon.build(model)
+
+# init params
+init_params = init_fn.(Nx.template({1, 1}, :u8), %{})
+
+# pred_fn
+pred_fn.(init_params, Nx.tensor([ [10], [20] ]))
+
+# input predict
+inputs = Nx.tensor([ [10],[11],[12],[15] ])
+y_pred = Axon.predict(model, init_params, inputs)
+y_true = [23, 25, 27, 33] |> Nx.tensor(type: :f32) |> Nx.reshape({4,1})
+
+# MSE
+mse_loss = Axon.Losses.mean_squared_error(y_true, y_pred)
+
+# loss+grad
+NaiveLinearRegression.loss_value_and_grad(pred_fn, init_params, inputs, y_true)
+NaiveLinearRegression.my_loss_value_and_grad({1, 1}, inputs, y_true)
+
+# objective
+NaiveLinearRegression.objective(pred_fn, &Axon.Losses.mean_squared_error/2, init_params, inputs, y_true)
+
+# SGD optimizer
+{opt_init_fn, opt_update_fn} = Polaris.Optimizers.sgd(learning_rate: 0.001)
+optimizer_state = opt_init_fn.(init_params)
+current_params = init_params
+{new_params, new_optimizer_state, loss} = NaiveLinearRegression.update(current_params, optimizer_state, inputs, y_true, opt_update_fn, pred_fn)
+# 循环
+{new_params, new_optimizer_state, loss} = NaiveLinearRegression.update(new_params, new_optimizer_state, inputs, y_true, opt_update_fn, pred_fn)
+
+# All
+model = ExLearning.Axon.NaiveLinearRegression.build_model()
+inputs = Nx.tensor([ [10],[11],[12],[15] ])
+y_true = Nx.tensor([ [23],[25],[27],[33] ])
+ExLearning.Axon.NaiveLinearRegression.train_model(model, inputs, y_true, 100, 0.001)
+
+# 最终训练结果
+| iterations |     w |     b |
+|------------+-------+-------|
+|        100 | 2.152 | 1.130 |
+|       1000 | 2.128 | 1.422 |
+|      10000 | 2.024 | 2.711 |
+|      50000 | 2.000 | 2.999 |
