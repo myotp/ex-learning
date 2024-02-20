@@ -145,3 +145,19 @@ ExLearning.Axon.NaiveLinearRegression.train_model(model, inputs, y_true, 100, 0.
 |       1000 | 2.128 | 1.422 |
 |      10000 | 2.024 | 2.711 |
 |      50000 | 2.000 | 2.999 |
+
+* CNN
+recompile
+alias ExLearning.Axon.SimpleCNN
+model = SimpleCNN.build_conv({1, 4, 4})
+{init_fn, pred_fn} = Axon.build(model)
+params = SimpleCNN.simple_params()
+input = SimpleCNN.sample_input_4x4()
+pred_fn.(params, input)
+
+model = SimpleCNN.build_sample_pooling_4x4
+{init_fn, pred_fn} = Axon.build(model)
+%{} = init_fn.(Nx.template({1, 4, 4, 1}, :u8), %{})
+pooling_input = SimpleCNN.sample_pooling_input()
+pooling_input |> Nx.reshape({4,4})
+pred_fn.(%{}, pooling_input)
